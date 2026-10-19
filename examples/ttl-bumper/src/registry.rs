@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 //! Registry module for tracking contract keys that require periodic TTL
 //! maintenance.
 //!
@@ -63,11 +65,7 @@ pub fn save_entry(env: &Env, entry: &RegistryEntry) {
     let is_new = !env.storage().persistent().has(&key);
     env.storage().persistent().set(&key, entry);
     if is_new {
-        let count: u32 = env
-            .storage()
-            .persistent()
-            .get(&DataKey::Count)
-            .unwrap_or(0);
+        let count: u32 = env.storage().persistent().get(&DataKey::Count).unwrap_or(0);
         env.storage()
             .persistent()
             .set(&DataKey::Count, &(count + 1));
@@ -86,11 +84,7 @@ pub fn remove_entry(env: &Env, contract: &Address, key_name: &Symbol) {
     let key = DataKey::Entry(contract.clone(), key_name.clone());
     if env.storage().persistent().has(&key) {
         env.storage().persistent().remove(&key);
-        let count: u32 = env
-            .storage()
-            .persistent()
-            .get(&DataKey::Count)
-            .unwrap_or(1);
+        let count: u32 = env.storage().persistent().get(&DataKey::Count).unwrap_or(1);
         env.storage()
             .persistent()
             .set(&DataKey::Count, &count.saturating_sub(1));
@@ -99,10 +93,7 @@ pub fn remove_entry(env: &Env, contract: &Address, key_name: &Symbol) {
 
 /// Return the number of currently registered entries.
 pub fn entry_count(env: &Env) -> u32 {
-    env.storage()
-        .persistent()
-        .get(&DataKey::Count)
-        .unwrap_or(0)
+    env.storage().persistent().get(&DataKey::Count).unwrap_or(0)
 }
 
 /// Load the bounty pool balance (stroops).

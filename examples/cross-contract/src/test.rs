@@ -1,16 +1,9 @@
+// SPDX-License-Identifier: MIT
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::token::{Token, TokenClient, TokenError};
     use crate::vault::{Vault, VaultClient, VaultError};
-    use soroban_sdk::{
-        testutils::{Address as _, Events},
-        Address, Env,
-    };
-    use soroban_sdk::testutils::Events;
-    use soroban_sdk::{testutils::Address as _, Address, Env};
-
-    fn setup_contracts() -> (Env, Address, TokenClient<'static>, Address, VaultClient<'static>, Address) {
     use soroban_sdk::{
         testutils::{Address as _, Events as _},
         Address, Env,
@@ -59,7 +52,6 @@ mod tests {
 
         // User deposits tokens into vault
         vault_client.deposit(&user, &deposit_amount);
-        
 
         // Check balances
         assert_eq!(vault_client.user_balance(&user), deposit_amount);
@@ -67,7 +59,6 @@ mod tests {
 
         // User withdraws some tokens
         vault_client.withdraw(&user, &withdraw_amount);
-        
 
         // Check final balances
         assert_eq!(
@@ -106,8 +97,14 @@ mod tests {
         let withdraw_amount = 200i128; // More than deposited
 
         // Setup: user deposits tokens
-        token_client.try_mint(&user, &deposit_amount).unwrap().unwrap();
-        vault_client.try_deposit(&user, &deposit_amount).unwrap().unwrap();
+        token_client
+            .try_mint(&user, &deposit_amount)
+            .unwrap()
+            .unwrap();
+        vault_client
+            .try_deposit(&user, &deposit_amount)
+            .unwrap()
+            .unwrap();
         token_client.mint(&user, &deposit_amount);
         vault_client.deposit(&user, &deposit_amount);
 
@@ -129,7 +126,6 @@ mod tests {
         // Setup: mint tokens and enable emergency mode
         token_client.mint(&user, &amount);
         vault_client.set_emergency_mode(&true);
-        
 
         assert!(vault_client.is_emergency_mode());
 
@@ -153,7 +149,6 @@ mod tests {
 
         // Admin performs emergency withdrawal
         let recovered_balance = vault_client.emergency_withdraw(&user);
-        
 
         assert_eq!(recovered_balance, amount);
         assert_eq!(vault_client.user_balance(&user), 0);
@@ -210,7 +205,6 @@ mod tests {
 
         // Update vault to use second token contract
         vault_client.update_token_contract(&token_id_2);
-        
 
         let current_token = vault_client.token_contract();
         assert_eq!(current_token, token_id_2);
@@ -259,20 +253,13 @@ mod tests {
         vault_client.deposit(&user, &amount);
 
         // Check that events were emitted from both contracts.
-        let events = env.events().all();
-        assert!(events.len() >= 2, "expected at least a token and vault event");
-        
-        // Perform deposit which involves cross-contract call
-        vault_client.deposit(&user, &amount);
-
-        // Event checks removed for compatibility with sdk v27
-
-        // Perform deposit which involves a cross-contract call (vault -> token)
-        vault_client.deposit(&user, &amount);
-
         // Both the token (which emitted a transfer event) and the vault (which
         // emitted a deposit event) should have emitted events.
         let all_events = env.events().all();
+        assert!(
+            all_events.events().len() >= 2,
+            "expected at least a token and vault event"
+        );
         assert!(
             !all_events.filter_by_contract(&token_id).events().is_empty(),
             "Should have a transfer event from the token contract"
@@ -292,7 +279,6 @@ mod tests {
 
         // Setup
         token_client.mint(&user, &amount);
-        
 
         // Deposit tokens
         vault_client.deposit(&user, &amount);

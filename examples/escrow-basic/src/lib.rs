@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Soroban Cookbook
+//
 //! # Escrow Basic
 //!
 //! A two-party escrow contract with an arbiter for dispute resolution.
@@ -333,11 +336,9 @@ mod tests {
     use soroban_sdk::{
         symbol_short,
         testutils::Address as _,
-        token::{self, StellarAssetClient},
-        Address, Env, Val,
         testutils::{Address as _, Events as _},
         token::{self, StellarAssetClient},
-        Address, Env,
+        Address, Env, Val,
     };
 
     /// Helper: register a Stellar asset contract and mint tokens to `to`.

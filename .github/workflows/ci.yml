@@ -358,7 +358,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -380,6 +380,9 @@ jobs:
 
       - name: Forbid new unwrap/expect outside #[cfg(test)]
         run: bash scripts/forbid-unwrap.sh
+
+      - name: Check example license fields and SPDX headers
+        run: bash scripts/check-example-licenses.sh
 
   e2e-console:
     name: Browser Console Audit
@@ -491,7 +494,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Check for drifted src= snippets
         run: bash scripts/check-snippet-drift.sh
@@ -567,11 +570,7 @@ jobs:
   summary:
     name: CI Summary
     runs-on: ubuntu-latest
-    needs: [lint-format, spellcheck, typecheck, build-docs, validate-deployment, test-examples, e2e-console, e2e-smoke, check-snippet-drift]
-    needs: [lint-format, spellcheck, typecheck, build-docs, validate-deployment, test-examples, lint-contracts, e2e-console, e2e-smoke, check-wasm-budgets]
-    needs: [lint-format, spellcheck, typecheck, build-docs, validate-deployment, test-examples, rustfmt, lint-contracts, e2e-console, e2e-smoke]
-    needs: [lint-format, spellcheck, typecheck, build-docs, validate-deployment, test-examples, wasm-build-examples, lint-contracts, e2e-console, e2e-smoke]
-    needs: [lint-format, spellcheck, typecheck, build-docs, validate-deployment, test-examples, lint-contracts, e2e-console, e2e-smoke, coverage]
+    needs: [lint-format, spellcheck, typecheck, build-docs, validate-deployment, test-examples, lint-contracts, rustfmt, wasm-build-examples, check-wasm-budgets, check-snippet-drift, e2e-console, e2e-smoke, coverage]
     if: always()
     steps:
       - name: Check job statuses

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Soroban Cookbook
 #![no_std]
 
 //! # Constructor args (`__constructor`) vs. delayed `initialize`

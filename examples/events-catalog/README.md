@@ -30,3 +30,7 @@ This pattern keeps the event type in the first topic and the human-readable payl
 ```bash
 cargo test --package events-catalog
 ```
+
+## Origin
+
+This example is original to the Soroban Cookbook repository.

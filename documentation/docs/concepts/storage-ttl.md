@@ -8,6 +8,27 @@ description: Understand time-to-live (TTL) for Soroban storage entries, how stat
 
 Every piece of data stored by a Soroban contract has a **time-to-live (TTL)** — a finite number of ledgers after which the entry expires. When an entry expires, the Stellar protocol either removes it permanently or moves it to an archival store. Understanding TTL is essential for designing contracts that maintain data correctly and manage rent costs efficiently.
 
+## Keys, wallets, RPC, and network risk
+
+TTL, rent, and archival behave differently per network. Before you deploy, fund an identity, call RPC, or run an external TTL-bump service:
+
+### Secret key handling
+
+- **Never commit, paste, or share** secret keys, seed phrases, or recovery phrases (git, screenshots, tickets, or chat).
+- Prefer **named CLI identities** (for example `stellar keys generate --global <name>`) or a **wallet extension** over putting raw secrets in commands or scripts.
+- Use **separate identities** for local/testnet and mainnet; never reuse a mainnet key for experiments.
+- If a secret may have been exposed, **rotate** it and stop using that key on-chain.
+
+### Network and RPC risk
+
+- **Testnet** is for learning and integration only (test value, possible resets).
+- **Mainnet** uses **real funds** and real rent fees; do not treat it as a playground.
+- Confirm **which network** your CLI and RPC URL target before deploy, invoke, or TTL extension.
+- Public RPC is convenient, not a full ops setup—untrusted or flaky endpoints can mislead you about live state.
+- Off-chain “extend TTL” services that sign transactions still need the same key and network discipline as any deploy.
+
+For network workflows and production controls, see **[Deploy to Testnet](../getting-started/deploy-testnet.md)** and **[Deploy to Mainnet](../getting-started/deploy-mainnet.md)**.
+
 ## What is TTL?
 
 TTL measures how many ledgers remain before a storage entry expires. Each ledger closes roughly every 5 seconds, so a TTL of 631,200 ledgers corresponds to approximately one year.

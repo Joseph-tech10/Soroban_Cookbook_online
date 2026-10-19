@@ -102,6 +102,9 @@ curl "https://friendbot.stellar.org?addr=$(stellar keys address my-testnet-accou
 
 ## Step 3: Configure Network for Testnet
 
+> See the [Stellar Networks](./networks.md) matrix for every network's RPC URL,
+> passphrase, and friendbot.
+
 ### Verify Network Configuration
 
 Check that testnet is properly configured:
@@ -150,7 +153,7 @@ Contract ID: CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABSC4
 
 **Save your Contract ID** — you'll need it for all interactions with this contract.
 
-This ID isn't random — it's deterministically derived from your source account and an internal deploy salt, which is why redeploying with the same account and salt on the same network always reproduces the same address. See [Contract IDs & Deploy Salt](/docs/concepts/contract-ids) if you need to predict a contract's address before deploying it (for example, to add it to an allowlist in advance).
+This ID isn't random — it's deterministically derived from your source account and an internal deploy salt, which is why redeploying with the same account and salt on the same network always reproduces the same address. See [Contract IDs & Deploy Salt](../concepts/contract-ids) if you need to predict a contract's address before deploying it (for example, to add it to an allowlist in advance).
 
 ### Store Contract ID for Later Use
 
@@ -187,6 +190,7 @@ stellar contract inspect --id $CONTRACT_ID --network testnet
 ```
 
 This shows:
+
 - Contract specification
 - Available functions and parameter names
 - Authorization requirements
@@ -515,15 +519,19 @@ Now that your contract is deployed:
 3. **Monitor events** — Check contract events and logs
 4. **Prepare for mainnet** — [Deploy to Mainnet](/docs/getting-started/deploy-mainnet) when validation is complete
 5. **Learn more** — Explore [Core Concepts](/docs/concepts/overview) and [Patterns](/docs/patterns/overview)
-2. **Monitor events** — Check contract events and logs with `stellar events --id $CONTRACT_ID --network testnet`
-3. **Prepare for mainnet** — [Deploy to Mainnet](/docs/getting-started/deploy-mainnet) when validation is complete
-4. **Learn more** — Explore [Core Concepts](/docs/concepts/overview) and [Patterns](/docs/patterns/overview)
+6. **Monitor events** — Check contract events and logs with `stellar events --id $CONTRACT_ID --network testnet`
+7. **Prepare for mainnet** — [Deploy to Mainnet](/docs/getting-started/deploy-mainnet) when validation is complete
+8. **Learn more** — Explore [Core Concepts](/docs/concepts/overview) and [Patterns](/docs/patterns/overview)
 
 ## Additional Resources
 
 - [Stellar CLI Documentation](https://developers.stellar.org/docs/tools/developer-tools/cli/stellar-cli)
-- [Stellar CLI Migration Guide](/docs/getting-started/stellar-cli-migration)
+- [Stellar CLI Migration Guide](./stellar-cli-migration)
 - [Stellar Testnet Guide](https://developers.stellar.org/docs/fundamentals-and-concepts/testnet-public-network)
 - [Soroban SDK Reference](https://docs.rs/soroban-sdk)
 - [Stellar Expert Testnet Explorer](https://stellar.expert/explorer/testnet)
 - [Stellar Discord Community](https://discord.gg/stellardev)
+
+## Key handling guidance
+
+Several commands on this page sign with a Stellar secret key (`S...`). Do **not** commit a secret key or seed phrase to your repo, paste it into a shell script, or export it as a long-lived shell variable. Prefer a named identity via the Stellar CLI (`stellar keys generate --global <alias>`) or, for browser dapps, let a wallet extension such as Freighter hold the key — the dapp should only ever see signed transaction XDR, never the secret itself. See [API Security](./api-security.md) for the same rule applied to the browser bundle, and [Deploy to Mainnet](./deploy-mainnet.md) before running any mainnet deploy.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 //! Example crate demonstrating #[contracttype] enums, structs, and storage round‑trip.
 
 use soroban_sdk::{contracttype, Env, Address, Symbol, Bytes, vec, Vec, Symbol, EnvVal, Storage, Panic};

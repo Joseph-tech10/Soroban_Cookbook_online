@@ -10,8 +10,7 @@ keywords:
 image: /img/soroban-social-card.png
 ---
 
-> **Note:** This concept page covers the high-level differences between token models in Soroban. For concrete implementation templates and examples, see the [Token Standards Pattern](../patterns/token-standards).
-
+> **Note:** This concept page covers the high-level differences between token models in Soroban. For concrete implementation templates and examples, see the Token Standards Pattern.
 
 # Soroban Token Standards Overview
 
@@ -21,6 +20,20 @@ Soroban token implementations generally follow two tracks:
 - Custom token contracts: Application-specific logic and storage models.
 
 ## SAC vs custom token at a glance
+
+Before connecting a wallet or deploying either model, protect your signing keys:
+never commit or paste secret keys or seed phrases into source code, documentation,
+issues, chat, or RPC requests. Prefer a named CLI identity or a wallet extension
+that keeps signing material out of commands and shared files.
+
+Use **testnet** with test accounts and test assets while learning. **Mainnet**
+transactions spend real funds and can irreversibly transfer assets or change
+token authority. Before signing, verify the network/passphrase, RPC endpoint,
+contract or asset identifier, recipient, permissions, and fees. A public RPC
+endpoint does not validate your operational choices or make deployment safe;
+never send it secret keys. Follow the
+[mainnet deployment safeguards](../getting-started/deploy-mainnet.md) and
+[API security guidance](../getting-started/api-security.md) before using real funds.
 
 | Dimension                  | SAC                                | Custom token                       |
 | -------------------------- | ---------------------------------- | ---------------------------------- |

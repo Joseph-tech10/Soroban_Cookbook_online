@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #![no_std]
 
 //! A minimal, side-by-side example of instance, persistent, and temporary

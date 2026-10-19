@@ -25,7 +25,7 @@ Read these repository pages and examples. The links are to files that exist in t
 4. **[Authorization & Access Control](../patterns/authorization.mdx)** — `require_auth`, roles, least privilege (`examples/authorization`, `examples/access-control`).
 5. **[Multisig wallet example](https://github.com/Soroban-Cookbook/Soroban_Cookbook_online/tree/main/examples/multisig-wallet)** — M-of-N signers and threshold execution (`examples/multisig-wallet/src/lib.rs`). See also [Authorization concepts](../concepts/authorization.md).
 6. **[Timelock Vault](../patterns/timelock-vault.mdx)** — time-delayed release (`examples/timelock-vault`).
-7. **[Governance Security](../security/governance.md)** — timelock between approval and execution of sensitive actions (including upgrades).
+7. **[Governance Security](../security/fundamentals)** — timelock between approval and execution of sensitive actions (including upgrades).
 8. **[Security Fundamentals](../security/fundamentals.md)** — vulnerability classes to review before production.
 
 ### Production safeguards (this repository's terminology)
@@ -119,6 +119,9 @@ Purchase XLM and send it to your deployer public key. You need enough XLM to cov
 Check the public key on a trusted explorer or your RPC provider **before** deploying. There is no Friendbot on mainnet. Do not paste account secrets into the CLI to "check a balance."
 
 ### Add the mainnet network
+
+> See the [Stellar Networks](./networks.md) matrix for every network's RPC URL,
+> passphrase, and friendbot.
 
 ```bash
 stellar network add \
@@ -409,7 +412,7 @@ Copy this checklist into your release notes for every mainnet deployment.
 - [Contract Lifecycle and Upgrades](../patterns/lifecycle-upgrades.mdx) — plan for future upgrades safely
 - [Emergency-stop example](https://github.com/Soroban-Cookbook/Soroban_Cookbook_online/tree/main/examples/emergency-stop)
 - [Timelock Vault](../patterns/timelock-vault.mdx)
-- [Governance Security](../security/governance.md)
+- [Governance Security](../security/fundamentals)
 
 ## Additional resources
 
