@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 //! Simple token contract that serves as the "callee" in cross-contract invocations.
 //!
 //! This contract demonstrates:
@@ -14,11 +15,6 @@ pub enum DataKey {
     Admin,
 }
 
-#[contracterror]
-#[derive(Clone, Copy, Debug, Eq, PartialEq, PartialOrd, Ord)]
-
-#[contracterror]
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
 #[contracterror]
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 #[repr(u32)]
@@ -57,16 +53,6 @@ impl Token {
         let balance = Self::balance(env.clone(), to.clone());
         let new_balance = balance + amount;
 
-        env.storage().persistent().set(&DataKey::Balance(to.clone()), &new_balance);
-
-        
-        env.storage().persistent().set(&DataKey::Balance(to.clone()), &new_balance);
-        
-        // Emit transfer event
-        env.events().publish(
-            (Symbol::new(&env, "transfer"), env.current_contract_address()),
-            (env.current_contract_address(), to, amount)
-
         env.storage()
             .persistent()
             .set(&DataKey::Balance(to.clone()), &new_balance);
@@ -101,8 +87,12 @@ impl Token {
         let to_balance = Self::balance(env.clone(), to.clone());
 
         // Update balances
-        env.storage().persistent().set(&DataKey::Balance(from.clone()), &(from_balance - amount));
-        env.storage().persistent().set(&DataKey::Balance(to.clone()), &(to_balance + amount));
+        env.storage()
+            .persistent()
+            .set(&DataKey::Balance(from.clone()), &(from_balance - amount));
+        env.storage()
+            .persistent()
+            .set(&DataKey::Balance(to.clone()), &(to_balance + amount));
         env.storage()
             .persistent()
             .set(&DataKey::Balance(from.clone()), &(from_balance - amount));
@@ -112,8 +102,6 @@ impl Token {
 
         // Emit transfer event
         env.events().publish(
-            (Symbol::new(&env, "transfer"), env.current_contract_address()),
-            (from, to, amount)
             (
                 Symbol::new(&env, "transfer"),
                 env.current_contract_address(),

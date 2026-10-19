@@ -3,7 +3,6 @@ license = "MIT"
 name = "counter"
 version = "0.1.0"
 edition = "2021"
-description = "Soroban example contract that maintains an incrementable counter stored in instance storage."
 description = "Soroban example contract maintaining an incrementable counter in instance storage."
 keywords = ["soroban", "example", "counter"]
 
@@ -11,7 +10,7 @@ keywords = ["soroban", "example", "counter"]
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-soroban-sdk = "27.0.3"
+soroban-sdk = "28.0.0"
 
 [dev-dependencies]
-soroban-sdk = { version = "27.0.3", features = ["testutils"] }
+soroban-sdk = { version = "28.0.0", features = ["testutils"] }

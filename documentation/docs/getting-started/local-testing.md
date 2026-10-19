@@ -1,8 +1,6 @@
 ---
 time: 15
 sidebar_position: 5.6
-title: Soroban Local Testing with Simulation and Snapshots
-description: Run Soroban contracts locally with stellar contract invoke, use --simulate for preflight validation, and capture ledger snapshots for reproducible debugging loops.
 keywords:
   - soroban local testing
   - stellar contract invoke
@@ -19,6 +17,10 @@ image: /img/soroban-social-card.png
 This guide focuses on fast local feedback loops using `stellar contract invoke`, `--simulate`, and reusable ledger snapshots.
 
 For broader troubleshooting workflows, continue with the [Debugging Guide](./debugging.md) or see the [Stellar CLI Migration Guide](./stellar-cli-migration.md).
+
+> **Which network?** See the [Stellar Networks](./networks.md) matrix for every
+> network's RPC URL, passphrase, and friendbot.
+
 This page has moved to the canonical guide for local contract testing and simulation.
 
 Please use the updated guide here:
@@ -45,7 +47,7 @@ Expected artifact location (example):
 target/wasm32-unknown-unknown/release/<contract>.optimized.wasm
 ```
 
-## Invoke locally with `stellar contract invoke`
+## Invoke locally with `stellar contract invoke`(
 
 Use local invocation to execute functions against a sandbox ledger:
 

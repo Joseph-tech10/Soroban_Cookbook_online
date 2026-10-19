@@ -62,6 +62,13 @@ Before submitting a transaction, the client sends an unexecuted `InvokeHostFunct
 
 The client inspects the simulation response, attaches required cryptographic signatures to the auth tree, packages the transaction with the generated footprint and resource limits, and submits it via `sendTransaction`.
 
+> **⚠️ Key-handling and network risk — read before signing**
+>
+> - **Never commit or paste a secret key or seed phrase** in source code, environment variables exposed to the browser (`VITE_*`, `NEXT_PUBLIC_*`), logs, or chat. If a key is ever exposed, rotate it immediately.
+> - In browser dapps, signing is done by a wallet extension (e.g., Freighter). The page builds the transaction and submits the signed XDR; it never holds the raw secret. See [API Security](/docs/getting-started/api-security) for the full pattern.
+> - In server-side scripts or CLI workflows, load keys from a secrets manager, an environment variable that is **not** logged, or a named identity (`stellar keys add <name>`). Avoid hardcoding `stellar ... --source S...` in shell history.
+> - **Testnet ≠ Mainnet.** RPC endpoints such as `https://soroban-testnet.stellar.org` are public infrastructure — not a sandbox for production key testing. Transactions submitted to mainnet RPC (`https://mainnet.stellar.validationcloud.io` or any public mainnet endpoint) use **real funds and are irreversible**. Confirm your network passphrase (`Networks.TESTNET` vs `Networks.PUBLIC`) before every submission. See [Deploy to Mainnet](/docs/getting-started/deploy-mainnet) for a pre-deploy safety checklist.
+
 When validators include the transaction in a ledger, the Soroban Host executes the contract in **strict enforcing mode**:
 - It permits access **only** to the ledger keys declared in the transaction's footprint.
 - It validates all signed authorization entries against account public keys and nonces.
@@ -124,6 +131,7 @@ Soroban's authorization framework uses different operating modes depending on wh
    - When the transaction's source account is the direct caller and signer. No separate sub-signature is required because the top-level transaction envelope signature authorizes the call.
 2. **Direct Account Authorization (`AddressWithNonce` / Ed25519 Signer):**
    - Required when an account (other than the sole invoker or in a complex sub-invocation) must authorize an action (e.g., token transfer). The account signs an authorization preimage containing contract ID, function name, arguments, nonce, and expiration ledger.
+   - **Key safety:** Never pass a raw Ed25519 secret key (`S…`) through an untrusted channel or store it in plaintext. In frontend code, delegate signing to a wallet extension. In backend/CLI scripts, use a named identity or load the key from a secrets manager. See [API Security](/docs/getting-started/api-security).
 3. **Custom Account Contract Authorization (Smart Wallets):**
    - For contracts acting as accounts (e.g., multi-sig contracts, passkey wallets). The host invokes the account contract's `__check_auth` function during on-chain execution to verify credentials.
 
@@ -276,6 +284,38 @@ When the user's transaction executes on-chain:
 
 ---
 
+## Security Considerations
+
+Simulation and submission touch three security-sensitive surfaces: **secret key handling**, **network selection**, and **RPC endpoint trust**. Address each before moving beyond testnet.
+
+### Key Handling
+
+| Do | Don't |
+|---|---|
+| Load keys from a secrets manager or `stellar keys add <name>` | Hardcode `S…` secret keys in source code or `.env` committed to a repository |
+| Use a wallet extension (Freighter) to sign in the browser | Put `Keypair.fromSecret(...)` in any client-exposed variable (`VITE_*`, `NEXT_PUBLIC_*`) |
+| Rotate any key that may have been logged or exposed | Store seed phrases in plaintext files or share them in chat/logs |
+| Prefer named identities for CLI scripts (`--source my-deployer`) | Pass raw secrets as CLI arguments that appear in shell history |
+
+If a key is ever exposed—even briefly—treat it as compromised. Transfer assets and revoke any authority it held.
+
+### Testnet vs. Mainnet
+
+`simulateTransaction` and `sendTransaction` are identical API calls on both networks. The only difference is the RPC URL and network passphrase—but that difference means **real, irreversible financial loss** on mainnet.
+
+- Always verify the `networkPassphrase` in your transaction builder (`Networks.TESTNET` vs. `Networks.PUBLIC`).
+- Do not reuse testnet keys on mainnet, and never fund a testnet address from a mainnet wallet.
+- Public RPC endpoints (e.g., `https://soroban-testnet.stellar.org`) have no authentication and rate-limit aggressively; they are not suitable as sole production infrastructure.
+- Before any mainnet submission, work through the [Deploy to Mainnet checklist](/docs/getting-started/deploy-mainnet).
+
+### RPC Endpoint Trust
+
+The preflight simulation result is only as trustworthy as the RPC node you query. A malicious or compromised node could return a crafted footprint or auth tree. For production, run or verify your own RPC node, or use a reputable provider with transport-layer security (TLS). Never submit a transaction whose auth tree you cannot independently verify.
+
+For the full browser-signing security model, including CORS and CSRF considerations, see [API Security](/docs/getting-started/api-security).
+
+---
+
 ## Best Practices & Mitigation Strategies
 
 To prevent footprint mismatches and simulation-vs-reality failures in production:
@@ -322,3 +362,5 @@ When building transactions from simulation data, SDKs allow adding a percentage 
 - [Storage Patterns](/docs/concepts/storage) — instance, persistent, and temporary storage lifecycles
 - [Authorization Concept](/docs/concepts/authorization) — Soroban identity and access control patterns
 - [Debugging Guide](/docs/getting-started/debugging) — troubleshooting failed invocations and diagnostic events
+- [API Security](/docs/getting-started/api-security) — never put secrets in the frontend, Freighter-only signing, CORS/CSRF
+- [Deploy to Mainnet](/docs/getting-started/deploy-mainnet) — mainnet risk checklist, real-fund considerations, and pre-deploy verification

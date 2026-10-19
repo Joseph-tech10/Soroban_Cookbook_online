@@ -1,5 +1,11 @@
 # Constructor Arguments (`__constructor`) vs. Delayed `initialize`
 
+## License and origin
+
+This crate is original to the [Soroban Cookbook](https://github.com/Soroban-Cookbook/Soroban_Cookbook_online) repository.
+It was not adapted from any external source.
+Licensed under the [MIT License](../../LICENSE) — Copyright (c) 2026 Soroban Cookbook.
+
 Two side-by-side contracts showing the two ways to bootstrap a Soroban
 contract's setup state — the modern deploy-time `__constructor`, and the older
 delayed `initialize` pattern — including tests for double initialization.

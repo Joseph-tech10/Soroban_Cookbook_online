@@ -22,6 +22,21 @@ Thank you for your interest in contributing! To ensure a smooth experience for b
 
 ### Rust Example Contracts: Style & Lint
 
+For every new or updated example, complete the
+[example origin checklist](documentation/docs/contributing/add-tested-example.md#example-origin-checklist)
+before merge:
+
+- [ ] Declare the crate's license in `examples/<example>/Cargo.toml`.
+- [ ] Add accurate SPDX license headers to new or modified Rust source files,
+  preserving any required upstream copyright and license notices.
+- [ ] Record an **Origin** section in `examples/<example>/README.md`: either
+  original work for this project, or adapted from a named public source with a
+  citation, revision/version, source license, and a summary of changes.
+
+For adapted material, verify the license permits the contribution and retain
+required attribution or NOTICE files. Flag uncertain compatibility for maintainers
+before merge. This checklist is a forward-looking requirement for contributions.
+
 The example Soroban contracts in [`examples/`](examples/) share a single style and
 lint configuration so local development matches CI exactly:
 
@@ -41,6 +56,40 @@ lint configuration so local development matches CI exactly:
   not flagged; only newly added ones outside test modules are rejected.
 
 These checks run in the `lint-contracts` CI job. Run them locally before opening a PR.
+
+---
+
+### License Policy for Example Crates
+
+All example crates in [`examples/`](examples/) are licensed under the repository's
+[MIT License](LICENSE). Example crates must not declare a different license.
+
+- **Required `license` field** — every example crate's `Cargo.toml` must set an
+  explicit `license` field in its `[package]` section so packaging and docs
+  tooling can read the license from the manifest:
+  ```toml
+  license = "MIT"
+  ```
+- **SPDX headers** — every Rust source file under `examples/**/*.rs` must start
+  with an `SPDX-License-Identifier` header matching the crate's license. For MIT
+  examples the expected header is:
+  ```rust
+  // SPDX-License-Identifier: MIT
+  ```
+  All existing example sources already include this header.
+
+- **Exceptions** — a crate may only use a different license if a maintainer
+  approves it in the PR and it is listed below with its rationale. There are
+  currently **no approved exceptions**.
+- **`multisig-timelock-upgrade`** — previously declared `Apache-2.0`; it now
+  declares `MIT` in line with this policy.
+
+New example PRs should confirm the crate's `license` field follows this policy
+(see the checklist in the [pull request template](.github/pull_request_template.md)).
+
+Adapted or third-party material must also be recorded in the root
+[NOTICE](NOTICE) file and in [examples/ORIGIN.md](examples/ORIGIN.md), following
+the instructions in NOTICE. Only record sources maintainers can verify.
 
 ---
 

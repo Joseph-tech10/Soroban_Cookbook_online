@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 // Integration tests for the custom-types example crate.
 
 #[cfg(test)]

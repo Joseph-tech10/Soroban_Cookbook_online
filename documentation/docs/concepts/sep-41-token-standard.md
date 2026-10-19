@@ -124,11 +124,21 @@ flowchart TB
 - [ ] Provide testnet contract IDs and verify wallet transfer flows.
 - [ ] Prefer SAC when representing classic Stellar assets ([SAC deep-dive](./stellar-asset-contract.md)).
 
+## Key-handling and signing
+
+Deploying and testing SEP-41 tokens involves signing transactions with real keys. Before you reach the "Provide testnet contract IDs and verify wallet transfer flows" step in the checklist above, make sure you handle those keys safely.
+
+- **Never commit or paste secret keys or seed phrases** in source code, `.env` files tracked by git, shell scripts, logs, or chat. If a key is ever exposed, treat it as compromised immediately: transfer any assets and revoke authority it held.
+- **Browser dapps must delegate signing to a wallet extension** (e.g., Freighter). The dapp builds the transaction; the wallet signs it; the dapp submits the signed XDR. The raw secret never touches your frontend code. See [API Security](/docs/getting-started/api-security) for the full pattern.
+- **CLI and server-side scripts** should use a named identity (`stellar keys add <name>`) or load keys from a secrets manager rather than passing a raw `S…` secret as a CLI argument (which appears in shell history).
+- **Testnet ≠ Mainnet.** The checklist step "verify wallet transfer flows" should be done on testnet first. Confirm your `networkPassphrase` (`Networks.TESTNET` vs. `Networks.PUBLIC`) before every submission — mainnet transactions use real funds and are irreversible. See the [Deploy to Mainnet checklist](/docs/getting-started/deploy-mainnet) before going to production.
+
 ## Related reading
 
 - [Token Standards Overview](./token-standards.md)
 - [Stellar Asset Contract (SAC)](./stellar-asset-contract.md)
 - [Authorization](./authorization.md)
+- [API Security](/docs/getting-started/api-security)
 - [SEP-41 on GitHub](https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md)
 
 ## Next

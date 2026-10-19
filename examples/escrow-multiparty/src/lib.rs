@@ -1,4 +1,4 @@
-//! # Multi-Party Escrow
+// SPDX-License-Identifier: MIT
 //!
 //! An escrow contract that supports three roles:
 //!
@@ -33,7 +33,6 @@
 //! | `Arbitrator` | `Address` | Neutral dispute resolver              |
 //! | `Amount`     | `i128`    | Locked amount                         |
 //! | `State`      | `State`   | Current state of the escrow           |
-
 #![no_std]
 use soroban_sdk::{contract, contracterror, contractimpl, contracttype, Address, Env};
 

@@ -25,6 +25,7 @@
 
 [budgets]
 hello-world = 1919
+merkle-proof = 21800
 counter = 2089
 authorization = 2303
 registry = 5229
@@ -49,6 +50,7 @@ htlc-swap = 19488
 balance-snapshot = 21900
 oracle-consumer = 22330
 stream-payment = 22397
+dutch-auction = 23000
 token-vesting = 22977
 constant-product-amm = 25360
 simple-dao = 36633

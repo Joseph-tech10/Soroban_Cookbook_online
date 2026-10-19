@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Soroban Cookbook
 #![no_std]
 use soroban_sdk::{contract, contractimpl, Env};
 
